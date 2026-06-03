@@ -156,6 +156,17 @@ align-items: center;
 </style>`
 }
 
+function headerHTML(section) {
+  const idAttr = section.anchorId ? ` id="${esc(section.anchorId)}"` : ''
+  const subtitle = section.subtitle
+    ? `\n<p style="max-width:650px; margin:20px auto 0; font-family:poppins; font-size:18px; color:${section.subtitleColor};">${esc(section.subtitle)}</p>`
+    : ''
+  return `<!-- ${section.title.toUpperCase().replace(/[<>]/g, '') || 'HEADER'} -->
+<div${idAttr} style="width:100%; padding:80px 40px; text-align:center; background:${section.bgColor};">
+<h2 style="font-family:archivo; font-size:46px; margin:0; color:${section.titleColor};">${esc(section.title)}</h2>${subtitle}
+</div>`
+}
+
 function sectionHTML(section, globalBgColor, globalTextColor, globalButtonBgColor) {
   const img = section.imageUrl
     ? `<img alt="${esc(section.imageAlt)}" border="0" class="about-image" src="${esc(section.imageUrl)}" />`
@@ -360,13 +371,18 @@ export function generateHTML(hero, sections) {
   parts.push(heroCss(hero))
 
   if (sections.length > 0) {
-    // Use first section's colors as the global theme for shared CSS
-    const globalBgColor = sections[0].bgColor
-    const globalTextColor = sections[0].textColor
-    const globalButtonBgColor = sections[0].buttonBgColor || sections[0].textColor
+    // Use first content section's colors as the global theme for shared CSS
+    const firstContent = sections.find(s => s.type !== 'header') || sections[0]
+    const globalBgColor = firstContent.bgColor || '#ffffff'
+    const globalTextColor = firstContent.textColor || '#333333'
+    const globalButtonBgColor = firstContent.buttonBgColor || firstContent.textColor || '#333333'
 
     for (const section of sections) {
-      parts.push(sectionHTML(section, globalBgColor, globalTextColor, globalButtonBgColor))
+      if (section.type === 'header') {
+        parts.push(headerHTML(section))
+      } else {
+        parts.push(sectionHTML(section, globalBgColor, globalTextColor, globalButtonBgColor))
+      }
     }
 
     parts.push(sectionsCss(globalBgColor, globalTextColor, globalButtonBgColor))

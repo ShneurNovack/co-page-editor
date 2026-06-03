@@ -117,8 +117,25 @@ body {
 .tab-actions button:disabled { opacity: 0.3; cursor: default; }
 .tab-actions .delete-btn:hover { background: #7f1d1d; border-color: #b91c1c; color: #fff; }
 
-.add-section-btn {
+.tab-type-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #6666aa;
+  background: #2a2a48;
+  border-radius: 3px;
+  padding: 1px 4px;
+  flex-shrink: 0;
+}
+
+.add-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin: 8px 16px;
+}
+
+.add-section-btn {
   padding: 9px 14px;
   background: transparent;
   color: #8888aa;
@@ -126,13 +143,21 @@ body {
   border-radius: 6px;
   font-size: 13px;
   cursor: pointer;
-  width: calc(100% - 32px);
+  width: 100%;
   transition: all 0.15s;
 }
 .add-section-btn:hover {
   background: #2e2e4e;
   color: #fff;
   border-color: #6666aa;
+}
+.add-header-btn {
+  border-color: #4e3e6e;
+  color: #9988cc;
+}
+.add-header-btn:hover {
+  background: #2e2040;
+  border-color: #8866cc;
 }
 
 /* EDITOR PANEL */
@@ -225,6 +250,14 @@ body {
   letter-spacing: 0 !important;
   cursor: pointer;
 }
+.label-hint {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #9ca3af;
+  font-size: 11px;
+}
+
 .checkbox-label input[type="checkbox"] {
   width: 16px;
   height: 16px;

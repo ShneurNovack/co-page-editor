@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import HeroEditor from './components/HeroEditor'
 import SectionEditor from './components/SectionEditor'
+import HeaderEditor from './components/HeaderEditor'
 import Preview from './components/Preview'
 import { generateHTML } from './utils/generateHTML'
 import './App.css'
@@ -18,6 +19,7 @@ const defaultHero = {
 }
 
 const newSection = () => ({
+  type: 'content',
   id: `s${Date.now()}`,
   imageUrl: '',
   imageAlt: 'Section image',
@@ -32,6 +34,17 @@ const newSection = () => ({
   buttonBgColor: '#82454f',
 })
 
+const newHeader = () => ({
+  type: 'header',
+  id: `s${Date.now()}`,
+  title: 'Section Title',
+  subtitle: 'A short description for this section.',
+  bgColor: '#ffffff',
+  titleColor: '#3E5239',
+  subtitleColor: '#333333',
+  anchorId: '',
+})
+
 export default function App() {
   const [hero, setHero] = useState(defaultHero)
   const [sections, setSections] = useState([])
@@ -40,6 +53,12 @@ export default function App() {
 
   const addSection = () => {
     const s = newSection()
+    setSections(prev => [...prev, s])
+    setActiveTab(`section-${s.id}`)
+  }
+
+  const addHeader = () => {
+    const s = newHeader()
     setSections(prev => [...prev, s])
     setActiveTab(`section-${s.id}`)
   }
@@ -73,6 +92,8 @@ export default function App() {
     })
   }
 
+  const activeSection = sections.find(s => `section-${s.id}` === activeTab)
+
   return (
     <div className="app">
       <div className="sidebar">
@@ -98,8 +119,9 @@ export default function App() {
               className={`section-tab ${activeTab === `section-${s.id}` ? 'active' : ''}`}
               onClick={() => setActiveTab(`section-${s.id}`)}
             >
-              <span className="tab-icon">▬</span>
+              <span className="tab-icon">{s.type === 'header' ? '⬛' : '▬'}</span>
               <span className="tab-title">{s.title || `Section ${i + 1}`}</span>
+              <span className="tab-type-badge">{s.type === 'header' ? 'HDR' : 'IMG'}</span>
               <div className="tab-actions" onClick={e => e.stopPropagation()}>
                 <button onClick={() => moveSection(s.id, -1)} disabled={i === 0} title="Move up">↑</button>
                 <button onClick={() => moveSection(s.id, 1)} disabled={i === sections.length - 1} title="Move down">↓</button>
@@ -108,20 +130,21 @@ export default function App() {
             </div>
           ))}
 
-          <button className="add-section-btn" onClick={addSection}>
-            + Add Section
-          </button>
+          <div className="add-buttons">
+            <button className="add-section-btn" onClick={addSection}>+ Image Section</button>
+            <button className="add-section-btn add-header-btn" onClick={addHeader}>+ Title Header</button>
+          </div>
         </div>
       </div>
 
       <div className="editor-panel">
         {activeTab === 'hero' ? (
           <HeroEditor hero={hero} onChange={setHero} />
-        ) : (
-          sections.filter(s => `section-${s.id}` === activeTab).map(s => (
-            <SectionEditor key={s.id} section={s} onChange={updates => updateSection(s.id, updates)} />
-          ))
-        )}
+        ) : activeSection?.type === 'header' ? (
+          <HeaderEditor key={activeSection.id} section={activeSection} onChange={updates => updateSection(activeSection.id, updates)} />
+        ) : activeSection ? (
+          <SectionEditor key={activeSection.id} section={activeSection} onChange={updates => updateSection(activeSection.id, updates)} />
+        ) : null}
       </div>
 
       <div className="preview-panel">
