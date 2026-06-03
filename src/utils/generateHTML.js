@@ -86,7 +86,7 @@ justify-content: center;
 .homeHero-title {
 font-size: 45px !important;
 color: ${hero.textColor} !important;
-font-family: archivo;
+font-family: poppins;
 font-weight: 700;
 word-spacing: 5px;
 }
@@ -102,7 +102,7 @@ word-spacing: 5px;
 a.hero-link {
 color: ${hero.textColor};
 text-decoration: none !important;
-font-family: archivo !important;
+font-family: poppins !important;
 margin-top: 42px;
 display: flex;
 }
@@ -163,7 +163,7 @@ function headerHTML(section) {
     : ''
   return `<!-- ${section.title.toUpperCase().replace(/[<>]/g, '') || 'HEADER'} -->
 <div${idAttr} style="width:100%; padding:80px 40px; text-align:center; background:${section.bgColor};">
-<h2 style="font-family:archivo; font-size:46px; margin:0; color:${section.titleColor};">${esc(section.title)}</h2>${subtitle}
+<h2 style="font-family:poppins; font-size:46px; margin:0; color:${section.titleColor};">${esc(section.title)}</h2>${subtitle}
 </div>`
 }
 
@@ -248,7 +248,7 @@ justify-content: center;
 
 h2.aboutSection-title {
     font-size: 40px !important;
-    font-family: archivo;
+    font-family: poppins;
     font-weight: 700;
     word-spacing: 5px;
     color: ${globalTextColor};
@@ -257,7 +257,7 @@ h2.aboutSection-title {
 .aboutSection-subtitle {
 font-size: 17px;
 margin-top: 15px;
-font-family: 'Archivo';
+font-family: 'Poppins';
 font-weight: 300;
 line-height: 150%;
 }
@@ -265,7 +265,7 @@ line-height: 150%;
 .about-link {
 color: #fff;
 text-decoration: none !important;
-font-family: archivo !important;
+font-family: poppins !important;
 margin-top: 25px;
 display: inline-block;
 background: ${globalButtonBgColor};
