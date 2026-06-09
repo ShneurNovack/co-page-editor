@@ -4,6 +4,7 @@ import SectionEditor from './components/SectionEditor'
 import HeaderEditor from './components/HeaderEditor'
 import Preview from './components/Preview'
 import { generateHTML } from './utils/generateHTML'
+import { parseHTML } from './utils/parseHTML'
 import './App.css'
 
 const defaultHero = {
@@ -50,6 +51,9 @@ export default function App() {
   const [sections, setSections] = useState([])
   const [copied, setCopied] = useState(false)
   const [activeTab, setActiveTab] = useState('hero')
+  const [showImport, setShowImport] = useState(false)
+  const [importText, setImportText] = useState('')
+  const [importError, setImportError] = useState('')
 
   const addSection = () => {
     const s = newSection()
@@ -84,6 +88,20 @@ export default function App() {
     })
   }, [])
 
+  const handleImport = () => {
+    try {
+      const { hero: newHero, sections: newSections } = parseHTML(importText)
+      setHero(newHero)
+      setSections(newSections)
+      setShowImport(false)
+      setImportText('')
+      setImportError('')
+      setActiveTab('hero')
+    } catch (e) {
+      setImportError('Could not parse the HTML. Make sure it uses the correct format.')
+    }
+  }
+
   const handleCopy = () => {
     const html = generateHTML(hero, sections)
     navigator.clipboard.writeText(html).then(() => {
@@ -99,9 +117,14 @@ export default function App() {
       <div className="sidebar">
         <div className="sidebar-header">
           <h1>Page Editor</h1>
-          <button className="copy-btn" onClick={handleCopy}>
-            {copied ? '✓ Copied!' : '⎘ Copy HTML'}
-          </button>
+          <div className="header-btns">
+            <button className="import-btn" onClick={() => { setShowImport(true); setImportError('') }}>
+              ↓ Import HTML
+            </button>
+            <button className="copy-btn" onClick={handleCopy}>
+              {copied ? '✓ Copied!' : '⎘ Copy HTML'}
+            </button>
+          </div>
         </div>
 
         <div className="section-list">
@@ -150,6 +173,30 @@ export default function App() {
       <div className="preview-panel">
         <Preview hero={hero} sections={sections} />
       </div>
+
+      {showImport && (
+        <div className="modal-overlay" onClick={() => setShowImport(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h2 className="modal-title">Import HTML</h2>
+            <p className="modal-desc">Paste existing page HTML below. All sections will be loaded into the editor.</p>
+            <textarea
+              className="modal-textarea"
+              value={importText}
+              onChange={e => setImportText(e.target.value)}
+              placeholder="Paste HTML here..."
+              rows={18}
+              autoFocus
+            />
+            {importError && <p className="import-error">{importError}</p>}
+            <div className="modal-actions">
+              <button className="modal-cancel" onClick={() => setShowImport(false)}>Cancel</button>
+              <button className="modal-confirm" onClick={handleImport} disabled={!importText.trim()}>
+                Import & Edit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

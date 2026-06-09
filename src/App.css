@@ -39,6 +39,26 @@ body {
   color: #fff;
 }
 
+.header-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.import-btn {
+  width: 100%;
+  padding: 8px 14px;
+  background: transparent;
+  color: #9988cc;
+  border: 1px solid #3e3e6e;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.import-btn:hover { background: #2e2040; border-color: #7755bb; color: #fff; }
+
 .copy-btn {
   width: 100%;
   padding: 9px 14px;
@@ -52,6 +72,104 @@ body {
   transition: background 0.15s;
 }
 .copy-btn:hover { background: #4338ca; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px;
+  width: 620px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.modal-desc {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.modal-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: monospace;
+  resize: vertical;
+  color: #1a1a2e;
+  flex: 1;
+}
+.modal-textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+}
+
+.import-error {
+  font-size: 13px;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-cancel {
+  padding: 9px 18px;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.modal-cancel:hover { background: #f3f4f6; }
+
+.modal-confirm {
+  padding: 9px 18px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.modal-confirm:hover { background: #4338ca; }
+.modal-confirm:disabled { opacity: 0.4; cursor: default; }
 
 .section-list {
   flex: 1;
